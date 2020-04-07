@@ -3,15 +3,65 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert a new Phone</title>
+
+<script>
+	function validateForm() {
+		var letters = /^[A-Za-z]+$/;
+
+		var name = document.forms["form"]["name"].value;
+		var model = document.forms["form"]["model"].value;
+		var screenSize = document.forms["form"]["screenSize"].value;
+		var compName = document.forms["form"]["company.companyName"].value;
+		var city = document.forms["form"]["company.city"].value;
+		var state = document.forms["form"]["company.state"].value;
+
+		if (name.match(letters)) {
+
+			if (!screenSize.isNaN && screenSize > 0 && screenSize < 9) {
+				if (compName.match(letters)) {
+					if (city.match(letters)) {
+						if (state.match(letters)) {
+							return true
+						} else {
+							alert("State cannot contain numbers");
+							return false;
+						}
+					} else {
+						alert("City cannot contain numbers");
+						return false;
+					}
+				} else {
+					alert("Company Name cannot contain numbers");
+					return false;
+				}
+			} else {
+				alert("Screensize must be a number and between 0 and 9");
+				return false;
+			}
+
+		} else {
+			alert("Name cannot contain numbers");
+			return false;
+		}
+
+	}
+</script>
+
+
 </head>
 <body>
-<form th:object="${newPhone}" th:action="@{/update/{id}(id=${newPhone.id})}" method='POST'>
-		Name: <input name="name" size="20" th:field="*{name}"> <br />Model: <input
-			name="model" size="10" th:field="*{model}"><br />Screen Size: <input
-			name="screenSize" size="20" th:field="*{screenSize}"><br />Company Name: <input
-			name="company.companyName" size="20" th:field="*{company.companyName}"><br />City: <input
-			name="company.city" size="20" th:field="*{company.city}"><br />State:<input
-			name="company.state" size="20" th:field="*{company.state}"><br /> <input name="submit"
+	<form name="form" onsubmit="return validateForm()"
+		th:object="${newPhone}" th:action="@{/update/{id}(id=${newPhone.id})}"
+		method='POST'>
+		Name: <input name="name" size="20" th:field="*{name}"> <br />
+		Model: <input name="model" size="10" th:field="*{model}"><br />
+		Screen Size: <input name="screenSize" size="20"
+			th:field="*{screenSize}"><br /> Company Name: <input
+			name="company.companyName" size="20"
+			th:field="*{company.companyName}"><br /> City: <input
+			name="company.city" size="20" th:field="*{company.city}"><br />
+		State:<input name="company.state" size="20"
+			th:field="*{company.state}"><br /> <input name="submit"
 			type="submit" value="submit" />
 	</form>
 	<a href="../viewAll">View all Phones</a>
